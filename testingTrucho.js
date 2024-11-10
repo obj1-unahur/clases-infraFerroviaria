@@ -10,4 +10,10 @@ let formacion1 = new tp.Formacion({locomotora: [locomotora1,locomotora2], vagone
 
 let deposito = new tp.Deposito({formaciones: formacion1})
 
-console.log(deposito)
+// un vagón de pasajeros de 10 metros de largo y 2 de ancho puede llevar hasta 80 pasajeros si está ordenado, 65 pasajeros si no.
+let vagonPasajero = new tp.VagonPasajeros({ancho: 2, largo:10,estaOrdenado: true})
+console.log("capacidad vagonPasajero1",vagonPasajero.maxPasajeros()) // => 80
+
+// otro vagón, también de 10 metros de largo, pero de 4 metros de ancho, puede llevar hasta 100 pasajeros si está ordenado, 85 pasajeros si no.
+let otroVagonPasajero = new tp.VagonPasajeros({ancho: 4, largo:10,estaOrdenado: true})
+console.log("capacidad vagonPasajero2",otroVagonPasajero.maxPasajeros()) // => 100
