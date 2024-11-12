@@ -14,7 +14,7 @@ class Vagon{
 // Vagones de pasajeros
 // Para definir un vagón de pasajeros, debemos indicar el largo y el ancho medidos en metros, si tiene o no baños, y si está o no ordenado.
 
-class VagonPasajeros{
+class VagonDePasajeros{
     constructor({ancho,largo,tieneBaño,estaOrdenado}){
         this.ancho = ancho
         this.largo = largo
@@ -41,6 +41,28 @@ class VagonPasajeros{
         return 2000 + kPasajeros + kBaños;
     }
 }
+// No puede llevar pasajeros, y no tiene baños.
+class VagonDeCarga {
+    constructor({cargaMaxIdeal,maderasSueltas = 0}){
+        this.cargaMaxIdeal = cargaMaxIdeal
+        this.maderasSueltas = maderasSueltas
+    }
+    
+    maxCarga(){
+        return 8000 - (400 * this.maderasSueltas)
+    }
+
+    maxPeso(){
+        // Un vagón de carga puede llevar hasta su carga máxima ideal, menos 400 kilos por cada madera suelta.
+        // Su peso máximo es de 1500 kilos más el máximo de carga que puede llevar.
+        return 1500 + this.maxCarga()
+    }
+
+    setMaderasSueltas(maderasSueltas){
+        this.maderasSueltas = Math.max(0,maderasSueltas)
+    }
+}
+
 // una formacion es un tren
 class Formacion{
     constructor({locomotora, vagones}){
@@ -65,4 +87,4 @@ class Deposito{
 
 
 
-export { Formacion, Locomotora, Vagon, Deposito, VagonPasajeros}
+export { Formacion, Locomotora, Vagon, Deposito, VagonDePasajeros, VagonDeCarga}
