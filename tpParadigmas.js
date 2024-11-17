@@ -14,53 +14,55 @@ class Vagon{
 // Vagones de pasajeros
 // Para definir un vagón de pasajeros, debemos indicar el largo y el ancho medidos en metros, si tiene o no baños, y si está o no ordenado.
 
-class VagonDePasajeros{
-    constructor({ancho,largo,tieneBaño,estaOrdenado}){
-        this.ancho = ancho
+class vagonPasajeros {
+
+    constructor(largo, ancho, tieneBaño, estaOrdenado){
         this.largo = largo
-        this.tieneBaño = tieneBaño
+        this.ancho = ancho
+        this.baño = tieneBaño
         this.estaOrdenado = estaOrdenado
     }
 
-    maxPasajeros(){
-        // si el ancho es hasta 3 metros, entran 8 pasajeros por cada metro de largo.
-        // si el ancho es de más de 3 metros, entran 10 pasajeros por cada metro de largo.
-        // Si el vagón no está ordenado, restar 15 pasajeros.
-
-        let pasajerosPorMetros = this.ancho <= 3 ? 8 * this.largo : 10 * this.largo;
-        return !this.estaOrdenado ? pasajerosPorMetros - 15 : pasajerosPorMetros;
+    tieneBaño(){return this.baño}
+    
+    pasajerosPorMetro(){
+        return this.ancho <= 3 ? 8*this.largo:100*this.largo 
     }
 
-    maxPeso(){
-        // si tiene baños, entonces puede llevar hasta 300 kilos.
-        // si no, hasta 800 kilos.
-        // El peso máximo de un vagón de pasajeros se calcula así: 2000 kilos, más 80 kilos por cada pasajero, más el máximo de carga que puede llevar.
-        
-        let kBaños = this.tieneBaño ? 300 : 800;
-        let kPasajeros = this.capacidadPasajeros() * 80
-        return 2000 + kPasajeros + kBaños;
+    cantidadPasajeros() {
+        return this.estaOrdenado ? this.pasajerosPorMetro() : this.pasajerosPorMetro()-15
     }
+
+    cargaMaxima(){return this.tieneBaño ? 300 : 800}
+
+    pesoMaximo(){return 2000+this.cantidadPasajeros()*80+this.cargaMaxima()}
+
+
 }
-// No puede llevar pasajeros, y no tiene baños.
-class VagonDeCarga {
-    constructor({cargaMaxIdeal,maderasSueltas = 0}){
-        this.cargaMaxIdeal = cargaMaxIdeal
+
+class vagonCarga {
+    constructor(cargaMaximaIdeal, maderasSueltas){
+        this.cargaMaximaIdeal = cargaMaximaIdeal
         this.maderasSueltas = maderasSueltas
     }
-    
-    maxCarga(){
-        return 8000 - (400 * this.maderasSueltas)
+
+    cargaMaxima(){return this.cargaMaximaIdeal-this.maderasSueltas*400}
+    cantidadPasajeros(){return 0}
+    tieneBaño(){return false}
+    pesoMaximo(){return 1500 + this.cargaMaxima()}
+}
+
+
+class vagonDormitorios {
+    constructor(compartimientos, camas){
+        this.compartimientos = compartimientos
+        this.camas = camas
     }
 
-    maxPeso(){
-        // Un vagón de carga puede llevar hasta su carga máxima ideal, menos 400 kilos por cada madera suelta.
-        // Su peso máximo es de 1500 kilos más el máximo de carga que puede llevar.
-        return 1500 + this.maxCarga()
-    }
-
-    setMaderasSueltas(maderasSueltas){
-        this.maderasSueltas = Math.max(0,maderasSueltas)
-    }
+    tieneBaño(){return true}
+    cantidadPasajeros(){this.compartimientos * this.camas}
+    cargaMaxima(){return 1200}
+    pesoMaximo(){return 4000 + this.cantidadPasajeros()*80 + this.cargaMaxima()}
 }
 
 // una formacion es un tren
