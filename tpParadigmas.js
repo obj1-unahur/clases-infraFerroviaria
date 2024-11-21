@@ -1,68 +1,112 @@
-class Locomotora{
+// clase abstracta que nos sirve para realizar una especie de interface, asi de esta manera facilitar el polimorfimos
+class AbsVagon{
     constructor(){
-
+        if (new.target === AbsVagon) {
+            throw new Error("No se puede instanciar una clase abstracta directamente")
+          }
     }
-}
-
-// hay varios tipos de vagones, asi que podriamos aplicar alguna herencia de esta clase
-class Vagon{
-    constructor(){
-
+    tieneBaño() {
+        throw new Error("Debe implementar el método 'tieneBaño'")
+    }
+    capacidadPasajeros() {
+        throw new Error("Debe implementar el método 'capacidadPasajeros'")
+    }
+    maxPasajeros() {
+        throw new Error("Debe implementar el metodo 'maxPasajeros'")
+    }
+    cargaMax() {
+        throw new Error("Debe implementar el metodo 'cargaMax'")
+    }
+    maxPeso() {
+        throw new Error("Debe implementar el metodo 'maxPeso'")
     }
 }
 
 // Vagones de pasajeros
 // Para definir un vagón de pasajeros, debemos indicar el largo y el ancho medidos en metros, si tiene o no baños, y si está o no ordenado.
 
-class VagonPasajeros{
+class VagonPasajeros extends AbsVagon{
     constructor({ancho,largo,tieneBaño,estaOrdenado}){
+        super(AbsVagon)
         this.ancho = ancho
         this.largo = largo
-        this.tieneBaño = tieneBaño
+        this.baño = tieneBaño
         this.estaOrdenado = estaOrdenado
     }
+    tieneBaño(){return this.baño}
+
+    capacidadPasajeros(){return this.ancho <= 3 ? 8 * this.largo : 10 * this.largo}
 
     maxPasajeros(){
-        // si el ancho es hasta 3 metros, entran 8 pasajeros por cada metro de largo.
-        // si el ancho es de más de 3 metros, entran 10 pasajeros por cada metro de largo.
-        // Si el vagón no está ordenado, restar 15 pasajeros.
-
-        let pasajerosPorMetros = this.ancho <= 3 ? 8 * this.largo : 10 * this.largo;
-        return !this.estaOrdenado ? pasajerosPorMetros - 15 : pasajerosPorMetros;
+        return this.estaOrdenado ? this.capacidadPasajeros() : this.capacidadPasajeros() - 15;
+    }
+    cargaMax(){
+        return this.tieneBaño() ? 300 : 800
     }
 
-    maxPeso(){
-        // si tiene baños, entonces puede llevar hasta 300 kilos.
-        // si no, hasta 800 kilos.
-        // El peso máximo de un vagón de pasajeros se calcula así: 2000 kilos, más 80 kilos por cada pasajero, más el máximo de carga que puede llevar.
-        
-        let kBaños = this.tieneBaño ? 300 : 800;
-        let kPasajeros = this.capacidadPasajeros() * 80
-        return 2000 + kPasajeros + kBaños;
+    maxPeso(){        
+        return 2000 + this.maxPasajeros() * 80 + this.cargaMax();
     }
 }
+
+class VagonCarga extends AbsVagon{
+    constructor({CargaIdeal,CantMadera}){
+        super(AbsVagon)
+        this.CargaIdeal = CargaIdeal
+        this.CantMadera = CantMadera
+    }
+    tieneBaño(){return false}
+    maxPasajeros(){return 0}
+    cargaMax(){return this.CargaIdeal - this.CantMadera * 400}
+    maxPeso(){      
+
+        return 1500 + this.cargaMax()
+    }
+}
+
+class VagonDormitorio extends AbsVagon{
+    constructor({cantCompartimientos,cantCamas}){
+        super(AbsVagon)
+        this.cantCompartimientos = cantCompartimientos
+        this.cantCamas= cantCamas
+    }
+
+    tieneBaño(){return true}
+    maxPasajeros(){ return this.cantCompartimientos * this.cantCamas}
+    cargaMax(){return 1200 }
+    maxPeso(){ return 4000 + this.maxPasajeros() * 80 + this.cargaMax()}
+}
+
+
 // una formacion es un tren
 class Formacion{
-    constructor({locomotora, vagones}){
-        this.locomotora = locomotora
+    constructor({vagones = []}){
+        // this.locomotora = locomotora
         this.vagones = vagones
     }
-}
-
-class Deposito{
-    // el deposito puede tener varias formaciones
-    constructor({formaciones,locomotoras}){
-        this.formaciones = formaciones
-        this.locomotoras = locomotoras
+    
+    mantenimiento(){
+        this.vagones.forEach(vagon => {
+            if(vagon instanceof VagonCarga){
+                vagon.CantMadera= Math.max(vagon.CantMadera - 2, 0)
+            } else if(vagon instanceof VagonPasajeros) {
+                vagon.estaOrdenado = true
+            }
+        });
     }
 
-    addLocomotoraFormacion(formacion,...locomotoras){
-        if (formacion in this.formaciones){
-            formacion.locomotora.append(...locomotoras) // deberiamos verificar si las locomotora no estan en otra formacion.
-        }
-    }
+    cantidadPasajeros(){return this.vagones.reduce((acum, pasajeros) => acum + pasajeros.maxPasajeros(),0) }
+    
+    vagonesPopulares(){return this.vagones.reduce((acum,vagon)=>acum + (vagon.maxPasajeros() > 50 ? 1 : 0),0)}
+    
+    esCarguera(){return this.vagones.every(vagon => vagon.cargaMax() >= 1000 )}
+    
+    dispersionPeso(){
+        let pesos = this.vagones.map(vagon => vagon.maxPeso());
+        return Math.max(...pesos) - Math.min(...pesos)}
+    
+    cantidadBaños(){return this.vagones.reduce((acum, baños) => acum + (baños.tieneBaño()?1: 0), 0)}
 }
 
 
-
-export { Formacion, Locomotora, Vagon, Deposito, VagonPasajeros}
+export { Formacion, VagonPasajeros, VagonCarga,VagonDormitorio}
