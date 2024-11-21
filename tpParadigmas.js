@@ -1,8 +1,3 @@
-class Locomotora{
-    constructor(){
-
-    }
-}
 // clase abstracta que nos sirve para realizar una especie de interface, asi de esta manera facilitar el polimorfimos
 class AbsVagon{
     constructor(){
@@ -85,50 +80,33 @@ class VagonDormitorio extends AbsVagon{
 
 // una formacion es un tren
 class Formacion{
-    constructor({locomotora, vagones}){
-        this.locomotora = locomotora
+    constructor({vagones = []}){
+        // this.locomotora = locomotora
         this.vagones = vagones
     }
     
-}
-
-
-class Deposito{
-    // el deposito puede tener varias formaciones
-    constructor({formaciones,locomotoras}){
-        this.formaciones = formaciones
-        this.locomotoras = locomotoras
-    }
-
-    addLocomotoraFormacion(formacion,...locomotoras){
-        if (formacion in this.formaciones){
-            formacion.locomotora.push(...locomotoras) // deberiamos verificar si las locomotora no estan en otra formacion.
-        }//cambié un append por push
-    }
-    cantidadPasajeros(tren){return tren.vagones.reduce((acum, pasajeros) => acum + pasajeros.maxPasajeros(),0) }
-
-    vagonesPopulares(tren){return tren.vagones.reduce((acum,vagon)=>acum + (vagon.maxPasajeros() > 50 ? 1 : 0),0)}
-
-    esCarguera(tren){return tren.vagones.every(vagon => vagon.cargaMax() >= 1000 )}
-
-    dispersionPeso(tren){
-        let pesos = tren.vagones.map(vagon => vagon.maxPeso());
-        return Math.max(...pesos) - Math.min(...pesos)}
-
-    cantidadBaños(tren){return tren.vagones.reduce((acum, baños) => acum + (baños.tieneBaño()?1: 0), 0)}
-
-    mantenimiento(tren){
-
-        tren.vagones.forEach(vagon => {
+    mantenimiento(){
+        this.vagones.forEach(vagon => {
             if(vagon instanceof VagonCarga){
                 vagon.CantMadera= Math.max(vagon.CantMadera - 2, 0)
             } else if(vagon instanceof VagonPasajeros) {
                 vagon.estaOrdenado = true
             }
-
         });
     }
+
+    cantidadPasajeros(){return this.vagones.reduce((acum, pasajeros) => acum + pasajeros.maxPasajeros(),0) }
+    
+    vagonesPopulares(){return this.vagones.reduce((acum,vagon)=>acum + (vagon.maxPasajeros() > 50 ? 1 : 0),0)}
+    
+    esCarguera(){return this.vagones.every(vagon => vagon.cargaMax() >= 1000 )}
+    
+    dispersionPeso(){
+        let pesos = this.vagones.map(vagon => vagon.maxPeso());
+        return Math.max(...pesos) - Math.min(...pesos)}
+    
+    cantidadBaños(){return this.vagones.reduce((acum, baños) => acum + (baños.tieneBaño()?1: 0), 0)}
 }
 
 
-export { Formacion, Locomotora, Deposito, VagonPasajeros, VagonCarga,VagonDormitorio}
+export { Formacion, VagonPasajeros, VagonCarga,VagonDormitorio}
