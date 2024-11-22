@@ -8,7 +8,7 @@ let tren1 = new Formacion({
     vagones: [
         new VagonPasajeros({ancho: 4, largo:10,tieneBaño: true, estaOrdenado: true}),
         new VagonPasajeros({ancho: 2, largo:7,tieneBaño: false, estaOrdenado: false}),
-        new VagonCarga({CargaIdeal: 6800, CantMadera: 5}),
+        new VagonCarga({cargaIdeal: 6800, cantMadera: 5}),
         new VagonDormitorio({cantCompartimientos:8, cantCamas:3})
     ]
 
@@ -41,7 +41,7 @@ console.log("FORMACION 2\n\n")
 
 let tren2 = new Formacion({
     vagones: [
-        new VagonCarga({CargaIdeal: 8000, CantMadera: 1}),
+        new VagonCarga({cargaIdeal: 8000, cantMadera: 1}),
         new VagonDormitorio({cantCompartimientos:15, cantCamas:4})
     ]
 
