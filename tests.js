@@ -25,7 +25,7 @@ console.log("Cantidad de baños: ",tren1.cantidadBaños())
 console.log("")
 
 
-tren1.mantenimiento()
+tren1.mantenimientoVagones()
 console.log("DESPUÉS DEL MANTENIMIENTO")
 console.log("cantidad de pasajeros: ",tren1.cantidadPasajeros())
 console.log("Tiene vagones populares? ",tren1.vagonesPopulares())
@@ -55,7 +55,7 @@ console.log("Dispersión de pesos:", tren2.dispersionPeso())
 console.log("Cantidad de baños: ",tren2.cantidadBaños())
 console.log("")
 
-tren2.mantenimiento(tren2)
+tren2.mantenimientoVagones()
 console.log("DESPUÉS DEL MANTENIMIENTO")
 console.log("cantidad de pasajeros: ",tren2.cantidadPasajeros())
 console.log("Tiene vagones populares? ",tren2.vagonesPopulares())
