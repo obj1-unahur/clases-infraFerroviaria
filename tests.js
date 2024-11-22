@@ -25,7 +25,6 @@ console.log("Dispersión de pesos:", tren1.dispersionPeso())
 console.log("Cantidad de baños: ",tren1.cantidadBaños())
 console.log("")
 
-
 tren1.mantenimientoVagones()
 
 console.log("DESPUÉS DEL MANTENIMIENTO")
@@ -56,6 +55,7 @@ console.log("Es un tren de carga? ",tren2.esCarguera())
 console.log("Dispersión de pesos:", tren2.dispersionPeso())
 console.log("Cantidad de baños: ",tren2.cantidadBaños())
 console.log("")
+
 
 tren2.mantenimientoVagones()
 console.log("DESPUÉS DEL MANTENIMIENTO")
