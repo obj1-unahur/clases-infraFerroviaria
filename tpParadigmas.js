@@ -37,9 +37,7 @@ class VagonPasajeros extends AbsVagon{
         this.estaOrdenado = estaOrdenado
     }
     tieneBaño(){return this.baño}
-
     capacidadPasajeros(){return this.ancho <= 3 ? 8 * this.largo : 10 * this.largo}
-
     maxPasajeros(){return this.estaOrdenado ? this.capacidadPasajeros() : this.capacidadPasajeros() - 15;}
     cargaMax(){return this.tieneBaño() ? 300 : 800}
     maxPeso(){return 2000 + this.maxPasajeros() * 80 + this.cargaMax();}
@@ -97,6 +95,5 @@ class Formacion{
 
     cantidadBaños(){return this.vagones.reduce((acum, baños) => acum + (baños.tieneBaño()?1: 0), 0)}
 }
-
 
 export { Formacion, VagonPasajeros, VagonCarga,VagonDormitorio}

@@ -8,6 +8,7 @@ let tren1 = new Formacion({
     vagones: [
         new VagonPasajeros({ancho: 4, largo:10,tieneBaño: true, estaOrdenado: true}),
         new VagonPasajeros({ancho: 2, largo:7,tieneBaño: false, estaOrdenado: false}),
+
         new VagonCarga({cargaIdeal: 6800, cantMadera: 5}),
         new VagonDormitorio({cantCompartimientos:8, cantCamas:3})
     ]
@@ -26,6 +27,7 @@ console.log("")
 
 
 tren1.mantenimientoVagones()
+
 console.log("DESPUÉS DEL MANTENIMIENTO")
 console.log("cantidad de pasajeros: ",tren1.cantidadPasajeros())
 console.log("Tiene vagones populares? ",tren1.vagonesPopulares())
