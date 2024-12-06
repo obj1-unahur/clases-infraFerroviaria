@@ -1,7 +1,3 @@
 {
-  "name": "clases-infraFerroviaria",
-  "version": "1.0.0",
-  "wollokVersion": "4.0.0",
-  "author": "CONIGLIOH",
-  "license": "ISC"
+    "type": "module"
 }
